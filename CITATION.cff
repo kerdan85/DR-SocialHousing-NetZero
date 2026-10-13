@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this dataset or code, please cite it as below."
+title: "Net-zero potential of Dominican social housing: EnergyPlus models, hourly data and code"
+version: "1.0"
+license: CC-BY-4.0
+authors:
+  - family-names: "Mané Nina"
+    given-names: "Marco Neftalí"
+    affiliation: "Tecnologico de Monterrey"
+  - family-names: "García Kerdan"
+    given-names: "Iván"
+    affiliation: "Tecnologico de Monterrey"
+keywords: [social housing, net zero, EnergyPlus, rooftop PV, battery storage, Dominican Republic, energy efficiency]
