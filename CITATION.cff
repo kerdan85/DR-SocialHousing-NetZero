@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this dataset or code, please cite it as below."
 title: "Net-zero potential of Dominican social housing: EnergyPlus models, hourly data and code"
-version: "1.0"
+version: "1.1"
 license: CC-BY-4.0
 authors:
   - family-names: "Mané Nina"

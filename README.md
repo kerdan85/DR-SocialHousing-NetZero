@@ -2,7 +2,7 @@
 
 Supporting data and code for:
 
-> Mané Nina, M. N., García Kerdan, I. *Assessing the Net-Zero Potential of Caribbean Social Housing with Rooftop Solar, Shared Storage, and Efficiency Retrofits.* Submitted to *Energy Efficiency First* (2026).
+> Mané Nina, M. N., García Kerdan, I. *Net-zero and resilient social housing in a warming Caribbean: The role of efficiency, rooftop solar, and shared storage.* Submitted to *Energy and Buildings*. (2026).
 
 The package lets anyone rerun every number in the paper. It covers a 42-apartment social-housing development in the Dominican Republic, modelled in three climates: Montecristi (MC), Santo Domingo Este (SD) and Santiago (ST).
 
@@ -49,6 +49,34 @@ Steps 3–4 take a few minutes and use the stored hourly profiles. Steps 1–2 r
 - `scripts/run_all.py` is the original workflow (PV model, battery dispatch, outage test, flat-tariff billing). `pipeline.py` reuses its functions.
 - `run_energyplus.py` runs one model and writes the hourly profile.
 
+## Future climate (v1.1)
+
+The analysis is repeated for SSP2-4.5 and SSP5-8.5 in 2050 (2036–2065) and 2080 (2066–2095).
+
+| Folder | What it holds |
+|---|---|
+| `inputs/energyplus/future_climate/fwg_raw/` | Output of the Future Weather Generator v5.3.0 (CMIP6 global, 23-model equal-weight ensemble, classic monthly morphing): the morphed files, their manifests and the present-day control |
+| `inputs/energyplus/future_climate/weather/` | Weather files used in the simulations, built with `scripts/future_climate/build_epw.py` |
+| `inputs/energyplus/hourly_profiles_future/<scenario>/` | Hourly loads of the 18 simulations per scenario |
+| `results/future_climate/<scenario>/results.json` | Same structure as `results/results.json`, plus the outage-reserve fields described below |
+| `results/future_climate/summary.json`, `summary.csv` | Indicators by site and scenario (present day included) |
+
+**Weather files.** The generator recalculates the direct/diffuse split and the horizontal infrared radiation with its own models, which changes them even with a zero climate signal (see the present-day control). `build_epw.py` therefore takes temperature, humidity, pressure, global irradiance, wind, sky cover and precipitation from the morphed file. It keeps the original direct and diffuse irradiance, scaled by the hourly ratio of morphed to original global irradiance, and adds the hourly change in infrared radiation and opaque sky cover (morphed minus control) to the original values.
+
+**Simulations.** `run_future.py` runs the six models per site used by the pipeline. Before each run it raises the ground temperatures by the change in mean annual air temperature. It then runs `pipeline.py` unchanged, except that the outage step also records:
+- whether a sufficient reserve exists (`reserve_found`);
+- outage coverage with the battery held full (`full_soc_pct`);
+- the required reserve for the present-day critical load (`crit0_reserve`).
+
+```bash
+# layout expected by run_future.py: <futroot>/epw/<scenario>/<MC|SD|ST>.epw, present-day files in <futroot>/epw/present/
+python scripts/future_climate/build_epw.py <orig.epw> <fwg_future.epw> <fwg_control.epw> <out.epw>
+python scripts/future_climate/run_future.py <repo> <futroot> present ssp245_2050 ssp245_2080 ssp585_2050 ssp585_2080
+python scripts/future_climate/summarize.py <futroot>
+```
+
+The `present` run regenerates `results/results.json` exactly.
+
 ## Main assumptions
 
 All assumptions are listed in the paper (Table 2 and Annex). The main ones:
@@ -78,4 +106,4 @@ All assumptions are listed in the paper (Table 2 and Annex). The main ones:
 
 ## Contact
 
-Iván García Kerdan, School of Engineering and Sciences, Tecnológico de Monterrey — i.garciakerdan@tec.mx
+Iván García Kerdan, Tecnologico de Monterrey, School of Engineering and Sciences, Mexico City, Mexico — i.garciakerdan@tec.mx
