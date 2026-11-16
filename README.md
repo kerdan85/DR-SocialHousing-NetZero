@@ -2,7 +2,7 @@
 
 Supporting data and code for:
 
-> Mané Nina, M. N., García Kerdan, I. *Net-zero and resilient social housing in a warming Caribbean: The role of efficiency, rooftop solar, and shared storage.* Submitted to *Energy and Buildings*. (2026).
+> Mané Nina, M. N., García Kerdan, I. *Reducing grid dependence and outage vulnerability in Caribbean social housing: Efficiency, rooftop solar, and shared storage.* Submitted to *Energy for Sustainable Development*. (2026).
 
 The package lets anyone rerun every number in the paper. It covers a 42-apartment social-housing development in the Dominican Republic, modelled in three climates: Montecristi (MC), Santo Domingo Este (SD) and Santiago (ST).
 
